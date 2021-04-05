@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~font-awesome/css/font-awesome.min.css";
+
+html, body { 
+    margin: 0 auto;
+    padding: 5px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: #E5E6F0; 
+}
+
+.alert-danger {
+    font-size: smaller;
+}

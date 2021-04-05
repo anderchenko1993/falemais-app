@@ -1,0 +1,26 @@
+h4 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 15px; 
+}
+
+h4, h5 {
+    color: #0062cc;
+}
+
+.card {
+    border-radius: 4px;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    padding: 16px;
+}
+
+.content-resultado {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.content-resultado h5 {
+    font-size: 19px;
+    font-weight: 400;
+}

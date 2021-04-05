@@ -1,0 +1,87 @@
+<h4>Calcule o valor da ligação desejada</h4>
+
+<div class="card">
+    <form #form="ngForm" (submit)="calcular(form)">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label>Origem</label>
+            
+                <select 
+                    name="origem" 
+                    class="form-control" 
+                    #origem 
+                    [(ngModel)]="tarifa.origem" 
+                    required>
+                    <option 
+                        *ngFor="let codigo of codigos" 
+                        [value]="codigo">
+                        {{ codigo }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-sm-6">
+                <label>Destino</label>
+                <select 
+                    name="destino" 
+                    class="form-control" 
+                    #destino 
+                    [(ngModel)]="tarifa.destino" 
+                    required>
+                    <option 
+                        *ngFor="let codigo of codigos" 
+                        [value]="codigo">
+                        {{ codigo }}
+                    </option>
+                </select>
+            </div>     
+        </div>
+
+        <div *ngIf="origem.value != ''">
+            <div class="alert alert-danger" *ngIf="origem.value == destino.value">
+                Origem e Destino não podem ser iguais
+            </div>            
+        </div>
+
+        <div class="form-group">
+            <label>Plano</label>
+            <select 
+                name="plano" 
+                class="form-control" 
+                [(ngModel)]="tarifa.plano" 
+                required>
+                <option 
+                    *ngFor="let plano of planos" 
+                    [value]="plano.id">
+                    {{ plano.descricao }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Minutos</label>
+            <input 
+                name="minutos" 
+                type="number" 
+                class="form-control" 
+                [(ngModel)]="tarifa.minutos" 
+                placeholder="Digite o tempo total em minutos" 
+                required>
+        </div>
+
+        <div class="form-group">
+            <button 
+                type="submit" 
+                [disabled]="!form.valid || origem.value == destino.value" 
+                class="btn btn-primary btn-block">
+                Calcular
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="card content-resultado" *ngIf="resultado">
+    <h5>Total</h5>
+    <span>Com FaleMais <b>{{ resultado.comPlano | currency }}</b></span>
+    <span>Sem FaleMais <b>{{ resultado.semPlano | currency }}</b></span>
+</div>
