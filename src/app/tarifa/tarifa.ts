@@ -1,6 +1,6 @@
-export class Tarifa {
-    origem: string;
-    destino: string;
-    minutos: number;
-    plano: number;
+export interface Tarifa {
+  origem: string;
+  destino: string;
+  plano: string;
+  minutos: number;
 }

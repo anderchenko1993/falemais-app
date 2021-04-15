@@ -1,0 +1,13 @@
+.card {
+  margin-top: 10px;
+}
+
+.content-resultado {
+  padding: 5px;
+  text-align: center;
+}
+
+.content-resultado h5 {
+  font-size: 19px;
+  font-weight: 400;
+}

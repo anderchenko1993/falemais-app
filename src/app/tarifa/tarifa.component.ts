@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TarifaService } from '../core/tarifa.service';
+import { origemDestinoValidator } from './origem-destino.validator';
 import { Tarifa } from './tarifa';
 
 @Component({
@@ -10,15 +11,27 @@ import { Tarifa } from './tarifa';
 })
 export class TarifaComponent implements OnInit {
 
-  tarifa: Tarifa;
+  tarifaForm: FormGroup;
   planos: any[] = [];
   codigos: string[] = [];
-  resultado: object;
+  tarifa: any;
+  submitted: boolean = false;
 
-  constructor(private tarifaService: TarifaService) { }
+  constructor(private tarifaService: TarifaService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.tarifa = new Tarifa;
+    this.tarifaForm = this.formBuilder.group(
+      {
+        origem: ['', [Validators.required]],
+        destino: ['', [Validators.required]],
+        plano: ['', [Validators.required]],
+        minutos: ['', [Validators.required]]
+      },
+      {
+        validators: [origemDestinoValidator]
+      }
+    );
+
     this.getPlanos();
     this.getCodigos();
   }
@@ -33,12 +46,16 @@ export class TarifaComponent implements OnInit {
     this.codigos = this.tarifaService.getCodigos();
   }
 
-  calcular(form: NgForm) {
-    if(form.valid) {
-      this.tarifaService.calculoTarifa(this.tarifa).subscribe(result => {
-        this.resultado = result;
+  calcular() {
+    if (this.tarifaForm.valid) {
+      const tarifa = this.tarifaForm.getRawValue() as Tarifa;
+      console.log(tarifa);
+
+      this.tarifaService.calculoTarifa(tarifa).subscribe((result: any) => {
+        this.tarifa = result;
+        this.submitted = true;
       },
-      error => alert('Erro ao efetuar o cálculo.'));
+        error => alert('Erro ao efetuar o cálculo.'));
     }
   }
 

@@ -1,87 +1,86 @@
 <h4>Calcule o valor da ligação desejada</h4>
 
 <div class="card">
-    <form #form="ngForm" (submit)="calcular(form)">
+    <form [formGroup]="tarifaForm" (submit)="calcular()">
         <div class="form-group row">
             <div class="col-sm-6">
                 <label>Origem</label>
-            
-                <select 
-                    name="origem" 
-                    class="form-control" 
-                    #origem 
-                    [(ngModel)]="tarifa.origem" 
-                    required>
-                    <option 
-                        *ngFor="let codigo of codigos" 
-                        [value]="codigo">
-                        {{ codigo }}
-                    </option>
+                <select formControlName="origem" class="form-control">
+                  <option *ngFor="let codigo of codigos" [value]="codigo">
+                    {{ codigo }}
+                  </option>
                 </select>
+                <app-mensagem
+                  *ngIf="
+                    tarifaForm.get('origem')?.errors?.required &&
+                    tarifaForm.get('origem')?.touched"
+                  mensagem="Origem é obrigatório">
+                </app-mensagem>
             </div>
 
             <div class="col-sm-6">
                 <label>Destino</label>
-                <select 
-                    name="destino" 
-                    class="form-control" 
-                    #destino 
-                    [(ngModel)]="tarifa.destino" 
-                    required>
-                    <option 
-                        *ngFor="let codigo of codigos" 
-                        [value]="codigo">
-                        {{ codigo }}
-                    </option>
+                <select formControlName="destino" class="form-control">
+                  <option
+                    *ngFor="let codigo of codigos"
+                    [value]="codigo">
+                    {{ codigo }}
+                  </option>
                 </select>
-            </div>     
+                <app-mensagem
+                  *ngIf="
+                    tarifaForm.get('destino')?.errors?.required &&
+                    tarifaForm.get('destino')?.touched"
+                  mensagem="Destino é obrigatório">
+                </app-mensagem>
+            </div>
         </div>
 
-        <div *ngIf="origem.value != ''">
-            <div class="alert alert-danger" *ngIf="origem.value == destino.value">
-                Origem e Destino não podem ser iguais
-            </div>            
-        </div>
+        <app-mensagem
+          *ngIf="tarifaForm.errors?.origemIgualDestino"
+          mensagem="Origem deve ser diferente do Destino">
+        </app-mensagem>
 
         <div class="form-group">
             <label>Plano</label>
-            <select 
-                name="plano" 
-                class="form-control" 
-                [(ngModel)]="tarifa.plano" 
-                required>
-                <option 
-                    *ngFor="let plano of planos" 
-                    [value]="plano.id">
-                    {{ plano.descricao }}
+            <select formControlName="plano" class="form-control">
+                <option
+                  *ngFor="let plano of planos"
+                  [value]="plano.id">
+                  {{ plano.descricao }}
                 </option>
             </select>
+            <app-mensagem
+              *ngIf="tarifaForm.get('plano')?.errors?.required &&
+              tarifaForm.get('plano')?.touched"
+              mensagem="Plano é obrigatório">
+            </app-mensagem>
         </div>
 
         <div class="form-group">
             <label>Minutos</label>
-            <input 
-                name="minutos" 
-                type="number" 
-                class="form-control" 
-                [(ngModel)]="tarifa.minutos" 
-                placeholder="Digite o tempo total em minutos" 
-                required>
+            <input
+              formControlName="minutos"
+              type="number"
+              class="form-control"
+              placeholder="Digite o tempo total em minutos"
+            />
+            <app-mensagem
+              *ngIf="tarifaForm.get('minutos')?.errors?.required &&
+              tarifaForm.get('minutos')?.touched"
+              mensagem="Minutos é obrigatório">
+            </app-mensagem>
         </div>
 
         <div class="form-group">
-            <button 
-                type="submit" 
-                [disabled]="!form.valid || origem.value == destino.value" 
-                class="btn btn-primary btn-block">
+            <button
+                type="submit"
+                class="btn btn-primary btn-block"
+                [disabled]="!tarifaForm.valid">
                 Calcular
             </button>
         </div>
     </form>
 </div>
 
-<div class="card content-resultado" *ngIf="resultado">
-    <h5>Total</h5>
-    <span>Com FaleMais <b>{{ resultado.comPlano | currency }}</b></span>
-    <span>Sem FaleMais <b>{{ resultado.semPlano | currency }}</b></span>
-</div>
+<app-planos *ngIf="submitted" [tarifa]="tarifa"></app-planos>

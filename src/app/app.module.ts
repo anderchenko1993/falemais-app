@@ -2,22 +2,26 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { TarifaComponent } from './tarifa/tarifa.component';
+import { MensagemComponent } from './componentes/mensagem/mensagem.component';
+import { PlanosComponent } from './componentes/planos/planos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    TarifaComponent
+    TarifaComponent,
+    MensagemComponent,
+    PlanosComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
